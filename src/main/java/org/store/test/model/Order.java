@@ -2,6 +2,7 @@ package org.store.test.model;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Map;
 
@@ -11,5 +12,5 @@ public class Order {
     private final long userId;
     private final Date date;
     private final Map<Product, Long> bucket;
-    private final long sum;
+    private final BigDecimal sum;
 }

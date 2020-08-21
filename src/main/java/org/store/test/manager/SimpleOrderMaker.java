@@ -9,6 +9,7 @@ import org.store.test.service.UserService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +42,7 @@ public class SimpleOrderMaker implements OrderMaker {
             flag = isEnd();
             orderDtoIntegerMap.put(optionalProduct, quantity);
         }
-        OrderDto orderDto = new OrderDto(0, userId, new Date(0), orderDtoIntegerMap, 0);
+        OrderDto orderDto = new OrderDto(0, userId, new Date(0), orderDtoIntegerMap, new BigDecimal(0));
 
         return orderService.put(orderDto);
     }

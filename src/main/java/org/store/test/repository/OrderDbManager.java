@@ -29,7 +29,7 @@ public class OrderDbManager {
              PreparedStatement updateStatement = connection.prepareStatement(PUT_QUERY_ORDER_PRODUCT)) {
             connection.setAutoCommit(false);
             putStatement.setLong(1, order.getUserId());
-            putStatement.setLong(2, order.getSum());
+            putStatement.setBigDecimal(2, order.getSum());
             putStatement.executeUpdate();
             final ResultSet generatedKeys = putStatement.getGeneratedKeys();
             if (!generatedKeys.next()) {
@@ -70,7 +70,7 @@ public class OrderDbManager {
             while (productsResultSet.next()) {
                 final long productId = productsResultSet.getLong(1);
                 final Product product
-                        = new Product(productId, productsResultSet.getString(2), productsResultSet.getLong(3));
+                        = new Product(productId, productsResultSet.getString(2), productsResultSet.getBigDecimal(3));
                 bucket.put(product, productsResultSet.getLong(4));
             }
             return Optional.of(new Order(
@@ -78,7 +78,7 @@ public class OrderDbManager {
                     orderResultSet.getLong(2),
                     orderResultSet.getDate(3),
                     bucket,
-                    orderResultSet.getLong(4)));
+                    orderResultSet.getBigDecimal(4)));
         } catch (SQLException e) {
             throw new ShopDbException(e.getMessage(), e.getCause());
         }
@@ -97,13 +97,13 @@ public class OrderDbManager {
                 final ResultSet productRs = joinStatement.executeQuery();
                 while (productRs.next()) {
                     final long productId = orderResultSet.getLong(1);
-                    Product product = new Product(productId, productRs.getString(2), productRs.getLong(3));
+                    Product product = new Product(productId, productRs.getString(2), productRs.getBigDecimal(3));
                     bucket.put(product, productRs.getLong(4));
                 }
                 orders.add(new Order(orderID,
                         orderResultSet.getLong(2),
                         orderResultSet.getDate(3),
-                        bucket, orderResultSet.getLong(4)));
+                        bucket, orderResultSet.getBigDecimal(4)));
             }
             return orders;
         } catch (SQLException e) {

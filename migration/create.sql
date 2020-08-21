@@ -11,7 +11,7 @@ create table products
 (
     id           serial primary key,
     product_name varchar(30),
-    cost         bigint
+    cost         decimal(4,2)
 );
 
 create table orders
@@ -19,7 +19,7 @@ create table orders
     id         serial primary key,
     user_id    bigint unsigned,
     order_date date,
-    sum        bigint,
+    sum        decimal(4,2),
     foreign key (user_id) references Users (id)
 );
 

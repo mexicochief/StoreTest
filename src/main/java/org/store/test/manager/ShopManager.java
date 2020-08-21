@@ -9,6 +9,7 @@ import org.store.test.service.UserService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +39,7 @@ public class ShopManager {
         } else if (b == 2) {
             final Map<OrderDto, UserDto> ordersUsers = orderReceiver.getOrder();
             AsciiTable table = new AsciiTable();
-            table.addRow("Id", "Last name", "First name", "Date", "Product", "Cost", "Quantity");
+            table.addRow("Id", "First name", "Last name", "Date", "Product", "Cost", "Quantity");
             table.setPaddingBottom(2);
             for (Map.Entry<OrderDto, UserDto> orderUser : ordersUsers.entrySet()) {
                 final OrderDto order = orderUser.getKey();
@@ -46,11 +47,11 @@ public class ShopManager {
                 order.getBucket()
                         .forEach((product, quantity) -> table.addRow(
                                 order.getId(),
-                                user.getLastName(),
                                 user.getFirstName(),
+                                user.getLastName(),
                                 order.getDate(),
                                 product.getName(),
-                                (product.getCost() * quantity),
+                                (product.getCost().multiply(new BigDecimal(quantity))),
                                 quantity));
             }
             final String render = table.render();

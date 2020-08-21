@@ -24,7 +24,7 @@ public class ProductDbManager {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(PUT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, product.getName());
-            statement.setLong(2, product.getCost());
+            statement.setBigDecimal(2, product.getCost());
             statement.executeUpdate();
             final ResultSet generatedKeys = statement.getGeneratedKeys();
             if (!generatedKeys.next()) {
@@ -51,7 +51,7 @@ public class ProductDbManager {
             return Optional.of(new Product(
                     resultSet.getLong(1),
                     resultSet.getString(2),
-                    resultSet.getLong(3)));
+                    resultSet.getBigDecimal(3)));
         } catch (SQLException e) {
             throw new ShopDbException(e.getMessage(), e.getCause());
         }
@@ -66,7 +66,7 @@ public class ProductDbManager {
                 temp.add(new Product(
                         resultSet.getLong(1),
                         resultSet.getString(2),
-                        resultSet.getLong(3)));
+                        resultSet.getBigDecimal(3)));
             }
             return temp;
         } catch (SQLException e) {

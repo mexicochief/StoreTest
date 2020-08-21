@@ -5,17 +5,18 @@ import org.store.test.dto.ProductDto;
 import org.store.test.model.Order;
 import org.store.test.model.Product;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class OrderConverter {
     public OrderDto convert(Order order) {
         final Map<Product, Long> productDtoBuckets = order.getBucket();
-        final Long orderPrice = productDtoBuckets
+        final BigDecimal orderPrice = productDtoBuckets
                 .entrySet()
                 .stream()
-                .map(entry -> entry.getKey().getCost() * entry.getValue())
-                .reduce(Long::sum)
+                .map(entry -> entry.getKey().getCost().multiply(new BigDecimal(entry.getValue())))
+                .reduce(BigDecimal::add)
                 .orElseThrow(() -> new RuntimeException("Empty bucket"));
         final Map<ProductDto, Long> productBucket = productDtoBuckets
                 .entrySet()
@@ -26,11 +27,11 @@ public class OrderConverter {
 
     public Order convert(OrderDto orderDto) {
         final Map<ProductDto, Long> productDtoBucket = orderDto.getBucket();
-        final Long orderPrice = productDtoBucket
+        final BigDecimal orderPrice = productDtoBucket
                 .entrySet()
                 .stream()
-                .map(entry -> entry.getKey().getCost() * entry.getValue())
-                .reduce(Long::sum)
+                .map(entry -> entry.getKey().getCost().multiply(new BigDecimal(entry.getValue())))
+                .reduce(BigDecimal::add)
                 .orElseThrow(() -> new RuntimeException("Empty bucket"));
         final Map<Product, Long> productBucket = productDtoBucket
                 .entrySet()
