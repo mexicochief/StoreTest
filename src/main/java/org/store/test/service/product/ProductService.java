@@ -1,10 +1,11 @@
-package org.store.test.service;
+package org.store.test.service.product;
 
 import org.store.test.dto.ProductDto;
 import org.store.test.exception.EntityNotFoundException;
 import org.store.test.model.Product;
 import org.store.test.repository.ProductDbManager;
-import org.store.test.service.converter.ProductConverter;
+import org.store.test.service.product.converter.ProductConverter;
+import org.store.test.service.product.converter.SimpleProductConverter;
 
 import java.util.List;
 import java.util.Optional;

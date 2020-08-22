@@ -1,12 +1,12 @@
-package org.store.test.service;
+package org.store.test.service.order;
 
 import org.store.test.dto.OrderDto;
 import org.store.test.exception.EntityNotFoundException;
 import org.store.test.model.Order;
 import org.store.test.repository.OrderDbManager;
-import org.store.test.service.converter.OrderConverter;
+import org.store.test.service.order.converter.OrderConverter;
+import org.store.test.service.order.converter.SimpleOrderConverter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

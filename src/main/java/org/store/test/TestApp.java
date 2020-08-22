@@ -9,14 +9,18 @@ import org.store.test.property.SimplePropertiesLoader;
 import org.store.test.repository.OrderDbManager;
 import org.store.test.repository.ProductDbManager;
 import org.store.test.repository.UserDbManager;
-import org.store.test.service.OrderService;
-import org.store.test.service.ProductService;
-import org.store.test.service.UserService;
-import org.store.test.service.converter.OrderConverter;
-import org.store.test.service.converter.ProductConverter;
-import org.store.test.service.converter.UserConverter;
+import org.store.test.service.order.OrderService;
+import org.store.test.service.order.converter.OrderConverter;
+import org.store.test.service.product.ProductService;
+import org.store.test.service.product.converter.ProductConverter;
+import org.store.test.service.user.UserService;
+import org.store.test.service.order.converter.SimpleOrderConverter;
+import org.store.test.service.product.converter.SimpleProductConverter;
+import org.store.test.service.user.converter.SimpleUserConverter;
+import org.store.test.service.user.converter.UserConverter;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
@@ -34,23 +38,21 @@ public class TestApp {
         hikariConfig.setMaximumPoolSize(Integer.parseInt(properties.getProperty("maximumPoolSize")));
         HikariDataSource dataSource = new HikariDataSource(hikariConfig);
 
-        ProductConverter productConverter = new ProductConverter();
-        UserConverter userConverter = new UserConverter();
-        OrderConverter orderConverter = new OrderConverter();
+        ProductConverter productConverter = new SimpleProductConverter();
+        UserConverter userConverter = new SimpleUserConverter();
+        OrderConverter orderConverter = new SimpleOrderConverter();
 
         UserService userService = new UserService(new UserDbManager(dataSource), userConverter);
         ProductService productService = new ProductService(new ProductDbManager(dataSource), productConverter);
         OrderService orderService = new OrderService(new OrderDbManager(dataSource), orderConverter);
 
 
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-
-        try {
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));) {
             OrderMaker orderMaker = new SimpleOrderMaker(bufferedReader, productService, userService, orderService);
             OrderReceiver orderReceiver = new SimpleOrderReceiver(orderService, userService);
             ShopManager shopManager = new ShopManager(bufferedReader, orderMaker, orderReceiver);
             shopManager.start();
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException | IOException e) {
             System.out.println(e.getMessage());
         }
     }

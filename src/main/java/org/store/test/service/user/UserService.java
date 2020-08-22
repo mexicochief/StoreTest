@@ -1,10 +1,11 @@
-package org.store.test.service;
+package org.store.test.service.user;
 
 import org.store.test.dto.UserDto;
 import org.store.test.exception.EntityNotFoundException;
 import org.store.test.model.User;
 import org.store.test.repository.UserDbManager;
-import org.store.test.service.converter.UserConverter;
+import org.store.test.service.user.converter.SimpleUserConverter;
+import org.store.test.service.user.converter.UserConverter;
 
 import java.util.List;
 import java.util.Optional;

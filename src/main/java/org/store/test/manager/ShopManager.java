@@ -1,16 +1,12 @@
 package org.store.test.manager;
 
 import de.vandermeer.asciitable.AsciiTable;
-import de.vandermeer.skb.interfaces.translators.TargetTranslator;
-import de.vandermeer.translation.targets.Text2Html;
 import org.store.test.dto.OrderDto;
 import org.store.test.dto.UserDto;
-import org.store.test.service.UserService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Map;
 
 public class ShopManager {

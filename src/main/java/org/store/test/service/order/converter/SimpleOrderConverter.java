@@ -1,4 +1,4 @@
-package org.store.test.service.converter;
+package org.store.test.service.order.converter;
 
 import org.store.test.dto.OrderDto;
 import org.store.test.dto.ProductDto;
@@ -9,7 +9,8 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class OrderConverter {
+public class SimpleOrderConverter implements OrderConverter {
+    @Override
     public OrderDto convert(Order order) {
         final Map<Product, Long> productDtoBuckets = order.getBucket();
         final BigDecimal orderPrice = productDtoBuckets
@@ -25,6 +26,7 @@ public class OrderConverter {
         return new OrderDto(order.getId(), order.getUserId(), order.getDate(), productBucket, orderPrice);
     }
 
+    @Override
     public Order convert(OrderDto orderDto) {
         final Map<ProductDto, Long> productDtoBucket = orderDto.getBucket();
         final BigDecimal orderPrice = productDtoBucket

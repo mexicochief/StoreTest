@@ -2,8 +2,8 @@ package org.store.test.manager;
 
 import org.store.test.dto.OrderDto;
 import org.store.test.dto.UserDto;
-import org.store.test.service.OrderService;
-import org.store.test.service.UserService;
+import org.store.test.service.order.OrderService;
+import org.store.test.service.user.UserService;
 
 import java.util.HashMap;
 import java.util.List;
